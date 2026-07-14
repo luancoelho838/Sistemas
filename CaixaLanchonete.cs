@@ -1,7 +1,30 @@
 Console.WriteLine("========== LANCHONETE ==========");
 
-MostrarMenu();
-NovoPedido();
+// Definir o loop
+// Arrumar acumuladores 
+// Arrumar os cálculos (faturamento dobrado, etc)
+// Considerar chance de quebra caso pedidos = 0
+
+
+
+
+int registro = 0;
+
+int pedidosConfirmados = 0;
+int quantidadeXburguer = 0;
+int quantidadeRefrigerante = 0;
+int quantidadeBatataFrita = 0;
+double faturamentoTotal = 0;
+
+
+
+
+while(registro == 0)
+{
+   MostrarMenu();
+   MostrarTotal(CalcularTotal(quantidadeXburguer, quantidadeRefrigerante, quantidadeBatataFrita));
+}
+
 
 void MostrarMenu(){
 
@@ -38,17 +61,18 @@ void NovoPedido()
     string nomeCliente = Console.ReadLine();
 
     Console.WriteLine("Quantidade de X-Burguer: ");
-    int quantidadeXburguer = int.Parse(Console.ReadLine());
+    quantidadeXburguer = int.Parse(Console.ReadLine());
 
     Console.WriteLine("Quantidade de refrigerante: ");
-    int quantidadeRefrigerante = int.Parse(Console.ReadLine());
+    quantidadeRefrigerante = int.Parse(Console.ReadLine());
 
     Console.WriteLine("Quantidade de batata frita: ");
-    int quantidadeBatataFrita = int.Parse(Console.ReadLine());
+    quantidadeBatataFrita = int.Parse(Console.ReadLine());
 
-    CalcularTotal(quantidadeXburguer, quantidadeRefrigerante, quantidadeBatataFrita);
+    faturamentoTotal += CalcularTotal(quantidadeXburguer, quantidadeRefrigerante, quantidadeBatataFrita);
 
 }
+
 
 double CalcularTotal(int quantidadeXburguer, int quantidadeRefrigerante, int quantidadeBatataFrita)
 {
@@ -57,13 +81,18 @@ double CalcularTotal(int quantidadeXburguer, int quantidadeRefrigerante, int qua
     double precoBatataFrita = 12.0;
 
     double total = (quantidadeXburguer * precoXburguer) + (quantidadeRefrigerante * precoRefrigerante) + (quantidadeBatataFrita * precoBatataFrita);
-    Console.WriteLine($"Total do pedido: R$ {total}");
 
     return total;
 }
 
+void MostrarTotal(double total)
+{
+    Console.WriteLine($"Total do pedido: R$ {total}");
+    ConfirmarPedido();
+}
 
-void ConfirmaçãoPedido()
+
+void ConfirmarPedido()
 {
     Console.WriteLine("Pedido confirmado?\n1 - Sim\n2 - Cancelar");
     int opcaoConfirmacao = int.Parse(Console.ReadLine());
@@ -71,28 +100,50 @@ void ConfirmaçãoPedido()
     if (opcaoConfirmacao == 1)
     {
         Console.WriteLine("Pedido confirmado!");
+        AtualizarRelatorio();
     }
     else
     {
         Console.WriteLine("Pedido cancelado.");
     }
+
+    Console.WriteLine("Deseja realizar outro pedido?\n1 - Sim\n2 - Não");
+    int opcaoNovoPedido = int.Parse(Console.ReadLine());
+    if(opcaoNovoPedido == 1)
+    {
+        NovoPedido();
+    }
+    else
+    {
+        MostrarMenu();
+    }
 }
+
+void AtualizarRelatorio()
+{
+    pedidosConfirmados += 1;
+    quantidadeXburguer += quantidadeXburguer;
+    quantidadeRefrigerante += quantidadeRefrigerante;
+    quantidadeBatataFrita += quantidadeBatataFrita;
+    faturamentoTotal += faturamentoTotal;
+}
+
 
 void MostrarRelatorio()
 {
     Console.WriteLine("========== RELATÓRIO ==========");
-    Console.WriteLine("Pedidos realizados: ");
-    Console.WriteLine("Hambúgueres vendidos: ");
-    Console.WriteLine("Batatas vendidas: ");
-    Console.WriteLine("Refrigerantes vendidos: ");
-    Console.WriteLine("Faturamento: ");
-    Console.WriteLine("Ticket médio: ");
+    Console.WriteLine($"Pedidos realizados: {pedidosConfirmados}");
+    Console.WriteLine($"Hambúgueres vendidos: {quantidadeXburguer}");
+    Console.WriteLine($"Batatas vendidas: {quantidadeBatataFrita}");
+    Console.WriteLine($"Refrigerantes vendidos: {quantidadeRefrigerante}");
+    Console.WriteLine($"Faturamento: R$ {faturamentoTotal}");
+    Console.WriteLine($"Ticket médio: R$ {faturamentoTotal / pedidosConfirmados:F2}");
 }
 
 
 void EncerrarSistema()
 {
-    Console.WriteLine("Deseja realemente encerrar o sistema?\n1 - Sim\n2 - Não");
+    Console.WriteLine("Deseja realmente encerrar o sistema?\n1 - Sim\n2 - Não");
     int opcaoEncerrar = int.Parse(Console.ReadLine());
     Console.WriteLine("Sistema encerrado.");
 }
