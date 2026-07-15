@@ -1,6 +1,5 @@
 Console.WriteLine("========== LANCHONETE ==========");
 
-// Definir o loop
 // Arrumar acumuladores 
 // Arrumar os cálculos (faturamento dobrado, etc)
 // Considerar chance de quebra caso pedidos = 0
@@ -23,7 +22,10 @@ while(registro == 0)
 {
    MostrarMenu();
    MostrarTotal(CalcularTotal(quantidadeXburguer, quantidadeRefrigerante, quantidadeBatataFrita));
+   ConfirmarPedido();
 }
+
+EncerrarSistema();
 
 
 void MostrarMenu(){
@@ -101,21 +103,27 @@ void ConfirmarPedido()
     {
         Console.WriteLine("Pedido confirmado!");
         AtualizarRelatorio();
+        RealizarNovoPedido();
     }
     else
     {
         Console.WriteLine("Pedido cancelado.");
+        RealizarNovoPedido();
     }
+}
 
+void RealizarNovoPedido()
+{
     Console.WriteLine("Deseja realizar outro pedido?\n1 - Sim\n2 - Não");
     int opcaoNovoPedido = int.Parse(Console.ReadLine());
     if(opcaoNovoPedido == 1)
     {
+        registro = 0;
         NovoPedido();
     }
     else
-    {
-        MostrarMenu();
+    {   
+        VoltarMenu();
     }
 }
 
@@ -140,10 +148,32 @@ void MostrarRelatorio()
     Console.WriteLine($"Ticket médio: R$ {faturamentoTotal / pedidosConfirmados:F2}");
 }
 
+void VoltarMenu()
+{
+    Console.WriteLine("Deseja voltar ao menu principal?\n1 - Sim\n2 - Não");
+    int opcaoVoltarMenu = int.Parse(Console.ReadLine());
+    if(opcaoVoltarMenu == 1)
+    {
+        MostrarMenu();
+    }
+    else
+    {  
+        EncerrarSistema();
+    }
+}
 
 void EncerrarSistema()
 {
     Console.WriteLine("Deseja realmente encerrar o sistema?\n1 - Sim\n2 - Não");
     int opcaoEncerrar = int.Parse(Console.ReadLine());
+    if (opcaoEncerrar == 1)
+    {
+        Console.WriteLine("Sistema encerrado.");
+        Environment.Exit(0);
+    }
+    else
+    {
+        MostrarMenu();
+    }
     Console.WriteLine("Sistema encerrado.");
 }
