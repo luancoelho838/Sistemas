@@ -5,16 +5,20 @@ Console.WriteLine("========== LANCHONETE ==========");
 // Considerar chance de quebra caso pedidos = 0
 
 
-
-
 int registro = 0;
 
 int pedidosConfirmados = 0;
 int quantidadeXburguer = 0;
 int quantidadeRefrigerante = 0;
 int quantidadeBatataFrita = 0;
-double faturamentoTotal = 0;
+double faturamentoPedido = 0;
 
+
+
+int quantidadeXburguerTotal = 0;
+int quantidadeRefrigeranteTotal = 0;
+int quantidadeBatataFritaTotal = 0;
+double faturamentoTotal = 0;
 
 
 
@@ -22,7 +26,6 @@ while(registro == 0)
 {
    MostrarMenu();
    MostrarTotal(CalcularTotal(quantidadeXburguer, quantidadeRefrigerante, quantidadeBatataFrita));
-   ConfirmarPedido();
 }
 
 EncerrarSistema();
@@ -71,7 +74,7 @@ void NovoPedido()
     Console.WriteLine("Quantidade de batata frita: ");
     quantidadeBatataFrita = int.Parse(Console.ReadLine());
 
-    faturamentoTotal += CalcularTotal(quantidadeXburguer, quantidadeRefrigerante, quantidadeBatataFrita);
+    faturamentoPedido += CalcularTotal(quantidadeXburguer, quantidadeRefrigerante, quantidadeBatataFrita);
 
 }
 
@@ -102,7 +105,7 @@ void ConfirmarPedido()
     if (opcaoConfirmacao == 1)
     {
         Console.WriteLine("Pedido confirmado!");
-        AtualizarRelatorio();
+        AtualizarRelatorio(quantidadeXburguer, quantidadeRefrigerante, quantidadeBatataFrita, faturamentoPedido);
         RealizarNovoPedido();
     }
     else
@@ -127,13 +130,13 @@ void RealizarNovoPedido()
     }
 }
 
-void AtualizarRelatorio()
+void AtualizarRelatorio(int quantidadeXburguer, int quantidadeRefrigerante, int quantidadeBatataFrita, double faturamentoPedido)
 {
     pedidosConfirmados += 1;
-    quantidadeXburguer += quantidadeXburguer;
-    quantidadeRefrigerante += quantidadeRefrigerante;
-    quantidadeBatataFrita += quantidadeBatataFrita;
-    faturamentoTotal += faturamentoTotal;
+    quantidadeXburguerTotal += quantidadeXburguer;
+    quantidadeRefrigeranteTotal += quantidadeRefrigerante;
+    quantidadeBatataFritaTotal += quantidadeBatataFrita;
+    faturamentoTotal += faturamentoPedido;
 }
 
 
@@ -141,9 +144,9 @@ void MostrarRelatorio()
 {
     Console.WriteLine("========== RELATÓRIO ==========");
     Console.WriteLine($"Pedidos realizados: {pedidosConfirmados}");
-    Console.WriteLine($"Hambúgueres vendidos: {quantidadeXburguer}");
-    Console.WriteLine($"Batatas vendidas: {quantidadeBatataFrita}");
-    Console.WriteLine($"Refrigerantes vendidos: {quantidadeRefrigerante}");
+    Console.WriteLine($"Hambúgueres vendidos: {quantidadeXburguerTotal}");
+    Console.WriteLine($"Batatas vendidas: {quantidadeBatataFritaTotal}");
+    Console.WriteLine($"Refrigerantes vendidos: {quantidadeRefrigeranteTotal}");
     Console.WriteLine($"Faturamento: R$ {faturamentoTotal}");
     Console.WriteLine($"Ticket médio: R$ {faturamentoTotal / pedidosConfirmados:F2}");
 }
