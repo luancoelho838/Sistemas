@@ -1,7 +1,6 @@
 Console.WriteLine("========== LANCHONETE ==========");
 
 // Arrumar acumuladores 
-// Arrumar os cálculos (faturamento dobrado, etc)
 // Considerar chance de quebra caso pedidos = 0
 
 
@@ -26,6 +25,8 @@ while(registro == 0)
 {
    MostrarMenu();
    MostrarTotal(CalcularTotal(quantidadeXburguer, quantidadeRefrigerante, quantidadeBatataFrita));
+   ConfirmarPedido();
+   RealizarNovoPedido();
 }
 
 EncerrarSistema();
@@ -74,7 +75,7 @@ void NovoPedido()
     Console.WriteLine("Quantidade de batata frita: ");
     quantidadeBatataFrita = int.Parse(Console.ReadLine());
 
-    faturamentoPedido += CalcularTotal(quantidadeXburguer, quantidadeRefrigerante, quantidadeBatataFrita);
+    CalcularTotal(quantidadeXburguer, quantidadeRefrigerante, quantidadeBatataFrita);
 
 }
 
@@ -86,6 +87,7 @@ double CalcularTotal(int quantidadeXburguer, int quantidadeRefrigerante, int qua
     double precoBatataFrita = 12.0;
 
     double total = (quantidadeXburguer * precoXburguer) + (quantidadeRefrigerante * precoRefrigerante) + (quantidadeBatataFrita * precoBatataFrita);
+    faturamentoPedido = total;
 
     return total;
 }
