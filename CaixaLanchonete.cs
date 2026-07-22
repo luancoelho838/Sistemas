@@ -1,10 +1,5 @@
 Console.WriteLine("========== LANCHONETE ==========");
 
-// Arrumar acumuladores 
-// Considerar chance de quebra caso pedidos = 0
-
-
-int registro = 0;
 
 int pedidosConfirmados = 0;
 int quantidadeXburguer = 0;
@@ -21,15 +16,11 @@ double faturamentoTotal = 0;
 
 
 
-while(registro == 0)
+while(true)
 {
    MostrarMenu();
-   MostrarTotal(CalcularTotal(quantidadeXburguer, quantidadeRefrigerante, quantidadeBatataFrita));
-   ConfirmarPedido();
-   RealizarNovoPedido();
 }
 
-EncerrarSistema();
 
 
 void MostrarMenu(){
@@ -55,7 +46,6 @@ void MostrarMenu(){
             break;
         default:
             Console.WriteLine("Opção inválida. Tente novamente.");
-            MostrarMenu();
             break;
     }
 }
@@ -75,24 +65,37 @@ void NovoPedido()
     Console.WriteLine("Quantidade de batata frita: ");
     quantidadeBatataFrita = int.Parse(Console.ReadLine());
 
+    PedidoNulo();
+
     CalcularTotal(quantidadeXburguer, quantidadeRefrigerante, quantidadeBatataFrita);
 
+}
+
+void PedidoNulo()
+{
+    if(quantidadeXburguer == 0 && quantidadeRefrigerante == 0 && quantidadeBatataFrita == 0)
+    {
+        Console.WriteLine("Pedido nulo. Por favor, insira pelo menos um item.");
+        RealizarNovoPedido();
+    }
 }
 
 
 double CalcularTotal(int quantidadeXburguer, int quantidadeRefrigerante, int quantidadeBatataFrita)
 {
-    double precoXburguer = 18.0;
-    double precoRefrigerante = 7.0;
-    double precoBatataFrita = 12.0;
+    const double precoXburguer = 18.0;
+    const double precoRefrigerante = 7.0;
+    const double precoBatataFrita = 12.0;
 
     double total = (quantidadeXburguer * precoXburguer) + (quantidadeRefrigerante * precoRefrigerante) + (quantidadeBatataFrita * precoBatataFrita);
     faturamentoPedido = total;
 
+    MostrarTotalPedido(total);
+    
     return total;
 }
 
-void MostrarTotal(double total)
+void MostrarTotalPedido(double total)
 {
     Console.WriteLine($"Total do pedido: R$ {total}");
     ConfirmarPedido();
@@ -123,8 +126,8 @@ void RealizarNovoPedido()
     int opcaoNovoPedido = int.Parse(Console.ReadLine());
     if(opcaoNovoPedido == 1)
     {
-        registro = 0;
         NovoPedido();
+        ConfirmarPedido();
     }
     else
     {   
@@ -150,7 +153,16 @@ void MostrarRelatorio()
     Console.WriteLine($"Batatas vendidas: {quantidadeBatataFritaTotal}");
     Console.WriteLine($"Refrigerantes vendidos: {quantidadeRefrigeranteTotal}");
     Console.WriteLine($"Faturamento: R$ {faturamentoTotal}");
-    Console.WriteLine($"Ticket médio: R$ {faturamentoTotal / pedidosConfirmados:F2}");
+    if (pedidosConfirmados > 0)
+    {
+        Console.WriteLine($"Ticket médio: R$ {faturamentoTotal / pedidosConfirmados:F2}");
+    }
+    else
+    {
+        Console.WriteLine("Ticket médio: R$ 0.00");
+    }
+
+    VoltarMenu();
 }
 
 void VoltarMenu()
@@ -176,9 +188,12 @@ void EncerrarSistema()
         Console.WriteLine("Sistema encerrado.");
         Environment.Exit(0);
     }
-    else
+    else if (opcaoEncerrar == 2)
     {
-        MostrarMenu();
+        VoltarMenu();
     }
-    Console.WriteLine("Sistema encerrado.");
+    else{
+        Console.WriteLine("Opção inválida. Tente novamente.");
+        EncerrarSistema();
+    }
 }
